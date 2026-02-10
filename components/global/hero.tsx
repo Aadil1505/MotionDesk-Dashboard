@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="flex min-h-[85vh] flex-col items-center justify-center px-6 text-center">
+    <section className="flex flex-col items-center pt-40 pb-8 px-6 text-center">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
