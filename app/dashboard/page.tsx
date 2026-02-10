@@ -14,8 +14,12 @@ import { Separator } from "@/components/ui/separator";
 import { authClient } from "@/lib/auth-client";
 import {
   CalendarDays,
+  Check,
+  Copy,
   CreditCard,
   ExternalLink,
+  Eye,
+  EyeOff,
   Key,
   Loader2,
   Package,
@@ -58,6 +62,8 @@ export default function DashboardPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [customerState, setCustomerState] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showLicenseKey, setShowLicenseKey] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (sessionPending) return;
