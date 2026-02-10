@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { AuroraText } from "../ui/aurora-text";
 
 export default function Hero() {
   return (
@@ -14,7 +15,7 @@ export default function Hero() {
         transition={{ duration: 0.6 }}
         className="max-w-2xl text-5xl font-bold tracking-tight sm:text-6xl"
       >
-        Your Mac, Alive.
+        Your Mac, <AuroraText colors={["#f8f8f8", "#90D5FF"]}>Alive.</AuroraText>
       </motion.h1>
 
       <motion.p
