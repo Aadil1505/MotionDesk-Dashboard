@@ -6,7 +6,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "motion/react";
-import { JSX, ReactNode, useState } from "react";
+import { JSX, ReactNode, useRef, useState } from "react";
 
 export const FloatingNav = ({
   navItems,
@@ -23,21 +23,21 @@ export const FloatingNav = ({
   themeSlot?: ReactNode;
   className?: string;
 }) => {
-  const { scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
+  const lastScrollY = useRef(0);
 
   const [visible, setVisible] = useState(true);
 
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (typeof current === "number") {
-      const direction = current - scrollYProgress.getPrevious()!;
+  useMotionValueEvent(scrollY, "change", (current) => {
+    const direction = current - lastScrollY.current;
+    lastScrollY.current = current;
 
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(true);
-      } else if (direction < 0) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+    if (current < 100) {
+      setVisible(true);
+    } else if (direction < 0) {
+      setVisible(true);
+    } else if (direction > 1) {
+      setVisible(false);
     }
   });
 
