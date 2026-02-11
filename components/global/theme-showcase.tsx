@@ -1,5 +1,6 @@
 "use client";
 
+import { IconInfinity } from "@tabler/icons-react";
 import { motion, useInView } from "motion/react";
 import { useRef, useEffect } from "react";
 
@@ -61,9 +62,11 @@ export default function ThemeShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center text-3xl font-bold tracking-tight"
+          className="flex items-center justify-center gap-1 text-3xl font-bold tracking-tight"
         >
-          10 Themes. Infinite moods.
+          10+ Themes. 100+ Settings.
+          <IconInfinity className="size-12" />
+          Moods.
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -72,7 +75,7 @@ export default function ThemeShowcase() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-3 text-center text-muted-foreground"
         >
-          Each one is a real-time physics simulation rendered on your GPU.
+          Each Wallpaper is an interactive, customizable physics simulation rendered on your GPU.
         </motion.p>
 
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

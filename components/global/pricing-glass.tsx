@@ -11,7 +11,7 @@ import {
 import { Button } from "../ui/button";
 
 const features = [
-  "All 7 visualization themes",
+  "All 10 visualization themes",
   "Multi-display support",
   "Cursor-responsive physics",
   "GPU-accelerated (Metal)",
