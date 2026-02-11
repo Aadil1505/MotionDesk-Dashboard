@@ -1,15 +1,55 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useRef, useEffect } from "react";
+
+function VideoCard({ theme, index }: { theme: { name: string; file: string }; index: number }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isInView = useInView(videoRef, { amount: 0.3 });
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isInView) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  }, [isInView]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className="group relative aspect-video overflow-hidden rounded-xl border border-border/60 bg-muted/30"
+    >
+      <video
+        ref={videoRef}
+        src={`/videos/${theme.file}`}
+        loop
+        muted
+        playsInline
+        preload="none"
+        className="h-full w-full object-cover"
+      />
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+        <span className="text-sm font-medium text-white">{theme.name}</span>
+      </div>
+    </motion.div>
+  );
+}
 
 const themes = [
-  { name: "Weather Field", file: "weather" },
-  { name: "Contour Field", file: "contour" },
-  { name: "Smoke Field", file: "smoke" },
-  { name: "Magnetic Field", file: "magnetic" },
-  { name: "Glyph Swarm", file: "glyph" },
-  { name: "ASCII Field", file: "ascii" },
-  { name: "Pulse Rings", file: "pulse" },
+  { name: "Weather Field", file: "weather-1.mp4" },
+  { name: "Contour Field", file: "contour-1.mp4" },
+  { name: "Smoke Field", file: "smoke-1.mp4" },
+  { name: "Magnetic Field", file: "magnetic-field-1.mp4" },
+  { name: "Glyph Swarm", file: "glyph-swarm-1.mp4" },
+  { name: "ASCII Field", file: "ascii-field-1.mp4" },
+  { name: "Pulse Rings", file: "pulse-rings-1.mp4" },
 ];
 
 export default function ThemeShowcase() {
@@ -37,24 +77,7 @@ export default function ThemeShowcase() {
 
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {themes.map((theme, i) => (
-            <motion.div
-              key={theme.file}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="group relative aspect-video overflow-hidden rounded-xl border border-border/60 bg-muted/30"
-            >
-              {/* Replace src with actual video/gif paths when assets are added */}
-              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                {theme.name}
-              </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                <span className="text-sm font-medium text-white">
-                  {theme.name}
-                </span>
-              </div>
-            </motion.div>
+            <VideoCard key={theme.file} theme={theme} index={i} />
           ))}
         </div>
       </div>

@@ -23,7 +23,7 @@ const features = [
 export default function PricingGlass() {
   const handleCheckout = async () => {
     await authClient.checkout({
-      slug: "Fluid-Field-Monhtly",
+      slug: "Fluid-Field-Monthly",
       successUrl: `${window.location.origin}/success`,
     });
   };

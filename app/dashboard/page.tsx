@@ -20,10 +20,12 @@ import {
   ExternalLink,
   Eye,
   EyeOff,
+  Infinity,
   Key,
   Loader2,
   Package,
   RefreshCw,
+  Sparkles,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
@@ -135,6 +137,25 @@ export default function DashboardPage() {
   const subStartedAt = sub ? get(sub, "startedAt", "started_at") : undefined;
   const subStatus = sub ? get(sub, "status") : undefined;
 
+  // Check for lifetime/one-time orders
+  const orders = get(customerState, "orders") ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lifetimeOrder = orders.find((o: any) => {
+    const productName = get(o, "product", "productName", "product_name") ?? "";
+    const productId = get(o, "productId", "product_id") ?? "";
+    return (
+      productName.toLowerCase().includes("lifetime") ||
+      productId === "a9ae9cbc-cf34-4119-bdce-439dec938363"
+    );
+  });
+
+  // Determine if user has lifetime access (has benefits but no subscription, or has lifetime order)
+  const hasLifetime = lifetimeOrder || (grantedBenefits.length > 0 && activeSubscriptions.length === 0);
+  const orderAmount = lifetimeOrder ? get(lifetimeOrder, "amount") : 3900; // Default to $39 if not available
+  const orderCurrency = lifetimeOrder ? get(lifetimeOrder, "currency") ?? "usd" : "usd";
+  const orderCreatedAt = lifetimeOrder ? get(lifetimeOrder, "createdAt", "created_at") : undefined;
+  console.log(lifetimeOrder)
+
   return (
     <section className="px-6 py-40">
       <div className="mx-auto max-w-2xl">
@@ -163,12 +184,18 @@ export default function DashboardPage() {
                   FluidField
                 </CardTitle>
                 <Badge variant={hasActivePurchase ? "default" : "secondary"}>
-                  {hasActivePurchase ? "Active" : "No purchase"}
+                  {hasActivePurchase
+                    ? hasLifetime && !sub
+                      ? "Lifetime"
+                      : "Active"
+                    : "No purchase"}
                 </Badge>
               </div>
               <CardDescription>
                 {hasActivePurchase
-                  ? "Your license is active. You have full access to all themes and features."
+                  ? hasLifetime && !sub
+                    ? "You have lifetime access. Enjoy all themes and features forever."
+                    : "Your license is active. You have full access to all themes and features."
                   : "You haven't purchased FluidField yet."}
               </CardDescription>
             </CardHeader>
@@ -212,6 +239,51 @@ export default function DashboardPage() {
                       </div>
                       <p className="font-medium">{formatDate(subStartedAt)}</p>
                     </div>
+                  </div>
+                </CardContent>
+              </>
+            )}
+
+            {hasActivePurchase && hasLifetime && !sub && (
+              <>
+                <Separator />
+                <CardContent className="pt-6">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Infinity className="size-3.5" />
+                        Plan
+                      </div>
+                      <p className="font-medium flex items-center gap-1.5">
+                        Lifetime
+                        <Sparkles className="size-3.5 text-primary" />
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <CreditCard className="size-3.5" />
+                        Amount paid
+                      </div>
+                      <p className="font-medium">
+                        {formatAmount(orderAmount, orderCurrency)}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Check className="size-3.5" />
+                        Status
+                      </div>
+                      <p className="font-medium text-green-600 dark:text-green-400">
+                        Lifetime access
+                      </p>
+                    </div>
+                    {/* <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <CalendarDays className="size-3.5" />
+                        Purchased on
+                      </div>
+                      <p className="font-medium">{formatDate(orderCreatedAt)}</p>
+                    </div> */}
                   </div>
                 </CardContent>
               </>
