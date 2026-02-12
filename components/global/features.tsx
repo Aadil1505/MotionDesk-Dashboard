@@ -6,7 +6,6 @@ import {
   MousePointerClick,
   Cpu,
   Palette,
-  Zap,
   SlidersHorizontal,
 } from "lucide-react";
 
@@ -28,13 +27,8 @@ const features = [
   },
   {
     icon: Palette,
-    title: "7 distinct themes",
+    title: "10+ distinct themes",
     description: "From weather fields to pulse rings — pick your vibe.",
-  },
-  {
-    icon: Zap,
-    title: "Autopilot mode",
-    description: "Sit back and let the wallpaper animate itself.",
   },
   {
     icon: SlidersHorizontal,
@@ -63,7 +57,7 @@ export default function Features() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-3 text-center text-muted-foreground"
         >
-          Everything you need from a live wallpaper engine — nothing you don't.
+          A wallpaper engine for your Mac that actually feels good.
         </motion.p>
 
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

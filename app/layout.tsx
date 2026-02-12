@@ -1,10 +1,10 @@
 import DotBackground from "@/components/global/dot-background";
-import Footer from "@/components/global/footer";
 import Navbar from "@/components/global/navbar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/global/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +24,7 @@ const quantico = Roboto_Mono({
 export const metadata: Metadata = {
   title: "MotionDesk — Live wallpapers for macOS",
   description:
-    "GPU-accelerated live wallpaper engine for macOS with 7 physics-driven themes, cursor-responsive interaction, and multi-display support.",
+    "GPU-accelerated live wallpaper engine for macOS with 10+ physics-driven themes, cursor-responsive interaction, and multi-display support.",
 };
 
 export default function RootLayout({
@@ -48,7 +48,6 @@ export default function RootLayout({
           <div className="relative" style={{ zIndex: 1 }}>
             <Navbar />
             <main>{children}</main>
-            <Footer />
           </div>
         </ThemeProvider>
       </body>

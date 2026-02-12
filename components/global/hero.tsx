@@ -25,7 +25,7 @@ export default function Hero() {
         className="mt-6 max-w-md text-lg text-muted-foreground"
       >
         GPU-accelerated live wallpapers for MacOS.
-        10 physics-driven themes that
+        10+ physics-driven themes that
         react to your cursor, breathe, and span every display.
       </motion.p>
 
