@@ -9,6 +9,7 @@ import {
   LiquidButton,
 } from "@/components/kokonutui/liquid-glass-card";
 import { Button } from "../ui/button";
+import DownloadButton from "@/components/global/download-button";
 
 const features = [
   "All 10 visualization themes",
@@ -121,9 +122,12 @@ export default function PricingGlass() {
 
               {/* Button */}
               <div className="mt-8">
-                <Button className="rounded-full w-full" variant="outline">
-                  Download Free
-                </Button>
+                <DownloadButton
+                  variant="outline"
+                  size="default"
+                  label="Download Free"
+                  className="rounded-full w-full"
+                />
               </div>
             </LiquidGlassCard>
           </motion.div>

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LiquidGlassCard } from "@/components/kokonutui/liquid-glass-card";
 import { authClient } from "@/lib/auth-client";
+import DownloadButton from "@/components/global/download-button";
 import {
   CalendarDays,
   Check,
@@ -291,12 +292,15 @@ export default function DashboardPage() {
               </>
             )}
 
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-3">
               {hasActivePurchase ? (
-                <Button variant="outline" onClick={handlePortal} className="rounded-full">
-                  Manage license
-                  <ExternalLink className="size-4" />
-                </Button>
+                <>
+                  <DownloadButton size="default" className="rounded-full" />
+                  <Button variant="outline" onClick={handlePortal} className="rounded-full">
+                    Manage license
+                    <ExternalLink className="size-4" />
+                  </Button>
+                </>
               ) : (
                 <Button asChild className="rounded-full">
                   <a href="/#pricing">Get MotionDesk</a>
