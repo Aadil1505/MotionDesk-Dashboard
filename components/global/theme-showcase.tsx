@@ -50,7 +50,6 @@ const themes = [
   { name: "Magnetic Field", file: "magnetic-field-1.mp4" },
   { name: "Glyph Swarm", file: "glyph-swarm-1.mp4" },
   { name: "ASCII Field", file: "ascii-field-1.mp4" },
-  { name: "Pulse Rings", file: "pulse-rings-1.mp4" },
 ];
 
 export default function ThemeShowcase() {
@@ -62,11 +61,14 @@ export default function ThemeShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex items-center justify-center gap-1 text-3xl font-bold tracking-tight"
+          className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-3xl font-bold tracking-tight"
         >
-          10+ Themes. 100+ Settings.
-          <IconInfinity className="size-12" />
-          Moods.
+          <span>10+ Themes.</span>
+          <span>100+ Settings.</span>
+          <span className="inline-flex items-center gap-1">
+            <IconInfinity className="size-10 sm:size-12" />
+            Moods.
+          </span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -83,6 +85,16 @@ export default function ThemeShowcase() {
             <VideoCard key={theme.file} theme={theme} index={i} />
           ))}
         </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="mt-8 text-center text-muted-foreground"
+        >
+          and many more...
+        </motion.p>
       </div>
     </section>
   );

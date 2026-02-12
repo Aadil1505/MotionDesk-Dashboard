@@ -12,7 +12,6 @@ const videos = [
   { name: "Magnetic Field", file: "magnetic-field-1.mp4" },
   { name: "Glyph Swarm", file: "glyph-swarm-1.mp4" },
   { name: "ASCII Field", file: "ascii-field-1.mp4" },
-  { name: "Pulse Rings", file: "pulse-rings-1.mp4" },
 ];
 
 export default function Home() {

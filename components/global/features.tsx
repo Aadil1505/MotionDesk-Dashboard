@@ -6,6 +6,7 @@ import {
   MousePointerClick,
   Cpu,
   Palette,
+  Zap,
   SlidersHorizontal,
 } from "lucide-react";
 
@@ -28,7 +29,12 @@ const features = [
   {
     icon: Palette,
     title: "10+ distinct themes",
-    description: "From weather fields to pulse rings — pick your vibe.",
+    description: "Customize your vibe from weather fields to glyph swarms.",
+  },
+  {
+    icon: Zap,
+    title: "Autopilot mode",
+    description: "Sit back and let the wallpaper animate itself.",
   },
   {
     icon: SlidersHorizontal,
