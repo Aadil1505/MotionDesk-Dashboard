@@ -217,7 +217,7 @@ export default function PricingGlass() {
                     </h3>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Pay once, own forever. No recurring fees.
+                    Pay once, own forever.
                   </p>
                   <div className="pt-2">
                     <div className="flex items-center gap-2">

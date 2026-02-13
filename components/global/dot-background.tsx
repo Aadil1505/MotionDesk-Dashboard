@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
-const REPULSION_RADIUS = 80;
-const REPULSION_STRENGTH = 20;
+const REPULSION_RADIUS = 100;
+const REPULSION_STRENGTH = 32;
 const DOT_SIZE = 3;
-const DOT_SPACING = 16;
-const SPRING_STIFFNESS = 300;
-const SPRING_DAMPING = 30;
+const DOT_SPACING = 12;
+const SPRING_STIFFNESS = 240;
+const SPRING_DAMPING = 45;
 const SPRING_MASS = 0.5;
-const PROXIMITY_MULTIPLIER = 1.2;
-const PROXIMITY_OPACITY_BOOST = 0.8;
+const PROXIMITY_MULTIPLIER = 1.35;
+const PROXIMITY_OPACITY_BOOST = 1.1;
 const OPACITY_PULSE_SPEED = 0.8;
 
 interface Dot {
@@ -43,17 +43,22 @@ function generateDots(width: number, height: number, spacing: number): Dot[] {
       const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
       const edgeFactor = Math.min(distanceFromCenter / (maxDistance * 0.7), 1);
 
-      if (Math.random() > edgeFactor) {
+      const keepChance = Math.min(0.4 + edgeFactor * 0.6, 1);
+      if (Math.random() > keepChance) {
         continue;
       }
+
+      const jitterStrength = spacing * 0.25;
+      const jitterX = (Math.random() - 0.5) * jitterStrength;
+      const jitterY = (Math.random() - 0.5) * jitterStrength;
 
       const pattern = (row + col) % 3;
       const baseOpacities = [0.3, 0.5, 0.7];
       const opacity = baseOpacities[pattern] * edgeFactor;
 
       dots.push({
-        baseX: x,
-        baseY: y,
+        baseX: x + jitterX,
+        baseY: y + jitterY,
         offsetX: 0,
         offsetY: 0,
         vx: 0,
@@ -166,8 +171,8 @@ export default function DotBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < REPULSION_RADIUS) {
-            const force =
-              (1 - distance / REPULSION_RADIUS) * REPULSION_STRENGTH;
+            const pull = 1 - distance / REPULSION_RADIUS;
+            const force = Math.pow(pull, 2) * REPULSION_STRENGTH;
             const angle = Math.atan2(dy, dx);
             targetOffsetX = Math.cos(angle) * force;
             targetOffsetY = Math.sin(angle) * force;

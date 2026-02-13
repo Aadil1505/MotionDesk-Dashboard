@@ -1,12 +1,14 @@
 "use client";
+
 import { cn } from "@/lib/utils";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "motion/react";
-import React, { JSX, ReactNode, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import React, {
+  JSX,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 // Glass shadow effects - matching liquid-glass-card style
 const GLASS_SHADOW_LIGHT =
@@ -82,11 +84,80 @@ export const FloatingNav = ({
   themeSlot?: ReactNode;
   className?: string;
 }) => {
+  const filterId = React.useId();
+  const [visible, setVisible] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
-  const filterId = React.useId();
 
-  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const sectionEntries = navItems
+      .map((item, index) => {
+        const hashIndex = item.link.indexOf("#");
+        if (hashIndex === -1) {
+          return null;
+        }
+        const sectionId = item.link.slice(hashIndex + 1);
+        const section = document.getElementById(sectionId);
+        if (!section) {
+          return null;
+        }
+        return { section, index };
+      })
+      .filter(Boolean) as { section: Element; index: number }[];
+
+    if (!sectionEntries.length) {
+      return;
+    }
+
+    let frameId: number | null = null;
+
+    const evaluateActive = () => {
+      const scrollCenter = window.scrollY + window.innerHeight * 0.4;
+      let best: { section: Element; index: number } | null = null;
+      let bestDistance = Infinity;
+
+      sectionEntries.forEach((entry) => {
+        const rect = entry.section.getBoundingClientRect();
+        const sectionTop = rect.top + window.scrollY;
+        const sectionCenter = sectionTop + rect.height / 2;
+        const distance = Math.abs(sectionCenter - scrollCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = entry;
+        }
+      });
+
+      if (best) {
+        const targetIndex = best.index;
+        setActiveIndex((current) => (current === targetIndex ? current : targetIndex));
+      }
+    };
+
+    const handleScroll = () => {
+      if (frameId) {
+        cancelAnimationFrame(frameId);
+      }
+      frameId = requestAnimationFrame(() => {
+        evaluateActive();
+        frameId = null;
+      });
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      if (frameId) {
+        cancelAnimationFrame(frameId);
+      }
+    };
+  }, [navItems]);
 
   useMotionValueEvent(scrollY, "change", (current) => {
     const direction = current - lastScrollY.current;
@@ -96,7 +167,7 @@ export const FloatingNav = ({
       setVisible(true);
     } else if (direction < 0) {
       setVisible(true);
-    } else if (direction > 1) {
+    } else if (direction > 3) {
       setVisible(false);
     }
   });
@@ -112,14 +183,14 @@ export const FloatingNav = ({
             y: 0,
           }}
           animate={{
-            y: visible ? 0 : -100,
+            y: visible ? 0 : -120,
             opacity: visible ? 1 : 0,
           }}
           transition={{
-            duration: 0.2,
+            duration: 0.25,
           }}
           className={cn(
-            "group flex max-w-fit fixed top-10 inset-x-0 mx-auto rounded-full bg-background/20 backdrop-blur-[2px] z-5000 px-6 py-2 items-center justify-center gap-4",
+            "group flex max-w-fit fixed top-10 inset-x-0 mx-auto rounded-full bg-background/20 backdrop-blur-[2px] z-5000 px-4 py-1.5 items-center justify-center gap-4 text-sm",
             className
           )}
         >
@@ -141,17 +212,23 @@ export const FloatingNav = ({
           <div className="pointer-events-none absolute inset-0 z-20 rounded-full bg-linear-to-r from-transparent via-foreground/5 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
 
           {/* Navigation items */}
-          <div className="relative z-10 flex items-center gap-4">
+          <div
+            className="relative z-10 flex h-9 items-center gap-6 text-sm font-semibold tracking-wide sm:gap-8 sm:text-base"
+          >
             {navItems.map((navItem, idx) => (
               <a
                 key={`link-${idx}`}
                 href={navItem.link}
+                aria-current={idx === activeIndex ? "page" : undefined}
                 className={cn(
-                  "items-center flex space-x-1 text-muted-foreground hover:text-foreground transition-colors"
+                  "relative z-10 inline-flex items-center px-2 transition-colors",
+                  idx === activeIndex
+                    ? "text-foreground"
+                    : "text-muted-foreground/70 hover:text-foreground/90"
                 )}
               >
                 <span className="block sm:hidden">{navItem.icon}</span>
-                <span className="hidden sm:block text-sm whitespace-nowrap">{navItem.name}</span>
+                <span className="hidden sm:block whitespace-nowrap">{navItem.name}</span>
               </a>
             ))}
           </div>

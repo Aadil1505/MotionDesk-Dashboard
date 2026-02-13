@@ -10,7 +10,7 @@ import { AuroraText } from "../ui/aurora-text";
 
 export default function Hero() {
   return (
-    <section className="flex flex-col items-center pt-40 pb-8 px-6 text-center">
+    <section id="home" className="flex flex-col items-center pt-40 pb-8 px-6 text-center">
       {/* App icon */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -18,7 +18,7 @@ export default function Hero() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mb-5"
       >
-        <LiquidGlassCard className="size-20 sm:size-24 rounded-[22.37%] p-2 overflow-hidden">
+        <LiquidGlassCard className="size-24 sm:size-28 rounded-[22.37%] p-2 overflow-hidden">
           <Image
             src="/web-app-manifest-192x192.png"
             alt="MotionDesk"
@@ -46,7 +46,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.15 }}
         className="mt-4 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
       >
-        Your Mac&apos;s Wallpaper, <AuroraText className="italic" colors={["#f8f8f8", "#90D5FF"]}>Alive.</AuroraText>
+        A <AuroraText colors={["#f8f8f8", "#90D5FF"]}>Premium</AuroraText> Feel For Your Mac.
       </motion.h1>
 
       {/* Description */}
@@ -56,9 +56,16 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.25 }}
         className="mt-5 max-w-lg text-base sm:text-lg text-muted-foreground leading-relaxed"
       >
-        GPU-accelerated live wallpapers for macOS.
-        10+ physics-driven themes that
-        react to your cursor, breathe, and span every display.
+        <AuroraText className="font-semibold" colors={["#f8f8f8", "#90D5FF"]}>
+          Highly-customizable,
+        </AuroraText>{' '}
+        <AuroraText className="font-semibold" colors={["#f8f8f8", "#90D5FF"]}>
+          GPU-accelerated
+        </AuroraText>{' '}
+        live wallpapers for your Mac. Physics-driven themes that actually look and feel{' '}
+        <AuroraText className="font-semibold" colors={["#f8f8f8", "#90D5FF"]}>
+          good
+        </AuroraText>.
       </motion.p>
 
       {/* CTA buttons */}
