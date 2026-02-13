@@ -18,12 +18,12 @@ export default function Hero() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mb-5"
       >
-        <LiquidGlassCard className="size-20 sm:size-24 rounded-[22.37%] p-0! overflow-hidden">
+        <LiquidGlassCard className="size-20 sm:size-24 rounded-[22.37%] p-2 overflow-hidden">
           <Image
-            src="/web-app-manifest-512x512.png"
+            src="/web-app-manifest-192x192.png"
             alt="MotionDesk"
             fill
-            className="absolute inset-0 size-full object-cover"
+            className="absolute inset-0 size-full object-cover rounded-[22.37%]"
             priority
           />
         </LiquidGlassCard>
